@@ -297,7 +297,7 @@ public struct BSDate: RawRepresentable, Equatable, Comparable {
 }
 
 extension BSDate {
-  public struct Duration {
+  public struct Duration: Equatable {
     public var years: Int
     public var months: Int
     public var days: Int
@@ -315,36 +315,16 @@ extension BSDate {
 
   public static func duration(from: BSDate, to: BSDate) -> Duration {
     precondition(from <= to, "from date must be before to date.")
-    var years = to.year - from.year
-
-    var months = to.month - from.month
-    if to.month < from.month {
-      years = years - 1; // borrow a year
-      months = to.month + 12 - from.month
-    }
 
     var days = to.day - from.day
+    var months = (to.year - from.year) * 12 + (to.month - from.month)
+
     if to.day < from.day {
-      months = months - 1; // borrow a month
-
-      var borrowedYear = to.year
-      var borrowedMonth = to.month - 1
-
-      if to.month == 1 {
-        borrowedYear = to.year - 1
-        borrowedMonth = 12
-      }
-
-      let lastDayOfPreviousMonth = Self.lastDay(year: borrowedYear, month: borrowedMonth)!
-      var totalDays = to.day + lastDayOfPreviousMonth
-
-      if from.day > totalDays { // can happen when borrowed days are not enough. eg: 2078-06-31 -> 2078-09-01
-        totalDays = totalDays + (from.day - lastDayOfPreviousMonth)
-      }
-
-      days = totalDays - from.day
+      months = months - 1
+      let lastDay = Self.lastDay(year: from.year, month: from.month)!
+      days = lastDay - from.day + to.day
     }
 
-    return Duration(years: years, months: months, days: days)
+    return Duration(years: months / 12, months: months % 12, days: days)
   }
 }

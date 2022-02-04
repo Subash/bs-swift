@@ -39,4 +39,15 @@ final class BSDateTests: XCTestCase {
     XCTAssertTrue(a)
     XCTAssertFalse(b)
   }
+
+  func testDuration() throws {
+    XCTAssertEqual(
+      BSDate.duration(from: BSDate("2051-04-01")!, to: BSDate("2052-03-10")!),
+      BSDate.Duration(years: 0, months: 11, days: 9)
+    )
+    XCTAssertEqual(
+      BSDate.duration(from: BSDate("2078-06-31")!, to: BSDate("2078-09-01")!),
+      BSDate.Duration(years: 0, months: 2, days: 1)
+    )
+  }
 }
