@@ -314,7 +314,7 @@ extension BSDate {
   }
 
   public static func duration(from: BSDate, to: BSDate) -> Duration {
-    precondition(from <= to, "from date must be before to date.")
+    precondition(from <= to, "From date must be before To date.")
 
     var days = to.day - from.day
     var months = (to.year - from.year) * 12 + (to.month - from.month)
