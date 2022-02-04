@@ -298,9 +298,9 @@ public struct BSDate: RawRepresentable, Equatable, Comparable {
 
 extension BSDate {
   public struct Duration {
-    var years: Int
-    var months: Int
-    var days: Int
+    public var years: Int
+    public var months: Int
+    public var days: Int
 
     public init(years: Int, months: Int, days: Int) {
       self.years = years
